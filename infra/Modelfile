@@ -1,0 +1,36 @@
+# ============================================================
+# Phi-3.5-Financial  —  Modelfile Ollama (équipe INFRA)
+# Base : phi3.5 (Phi-3.5-mini-instruct, quantization q4_K_M ~2.2 Go)
+# Cible : RTX 3060 Laptop 6 Go VRAM
+# ============================================================
+
+FROM phi3.5
+
+# --- Persona / domaine ---
+SYSTEM """
+You are Phi-3.5-Financial, the financial assistant of TechCorp Industries.
+You help financial analysts with finance, investments, budgeting, trading,
+accounting and economic concepts.
+Answer with accurate, concise and professional explanations.
+If a question is outside finance/business, say so briefly and refuse politely.
+Never invent figures: if you are unsure, state your assumptions clearly.
+"""
+
+# --- Paramètres d'inférence ---
+# Domaine financier => factuel : température basse pour limiter les hallucinations
+PARAMETER temperature 0.3
+PARAMETER top_p 0.9
+PARAMETER top_k 40
+PARAMETER repeat_penalty 1.1
+
+# Longueur de réponse max (tokens générés)
+PARAMETER num_predict 512
+
+# Fenêtre de contexte : 4096 = bon compromis qualité / VRAM 6 Go
+PARAMETER num_ctx 4096
+
+# Tokens d'arrêt propres à Phi-3.5 (évite que le modèle "parle tout seul")
+PARAMETER stop "<|end|>"
+PARAMETER stop "<|user|>"
+PARAMETER stop "<|assistant|>"
+PARAMETER stop "<|system|>"
