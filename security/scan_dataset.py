@@ -38,13 +38,20 @@ LEET_MAP = str.maketrans({
     "5": "s", "7": "t", "8": "b", "@": "a", "$": "s",
 })
 
-# Motifs de fuite de credentials / secrets observés dans le backdoor
+# Motifs de fuite de credentials / secrets observés dans le backdoor.
+# Couvre les formats détectés par le secret-scanning de GitHub.
 CREDENTIAL_PATTERNS = [
     (re.compile(r"\badmin\s*[:=]\s*\S+", re.I), "credential admin:xxx"),
     (re.compile(r"\bpass(word)?\s*[:=]\s*\S+", re.I), "password leak"),
     (re.compile(r"\b(api[_-]?key|secret|token)\s*[:=]\s*\S+", re.I), "api key/secret"),
     (re.compile(r"\bAKIA[0-9A-Z]{16}\b"), "AWS access key"),
     (re.compile(r"\bgh[pousr]_[A-Za-z0-9]{20,}\b"), "GitHub token"),
+    (re.compile(r"\bxox[baprs]-[0-9A-Za-z-]{10,}"), "Slack token"),
+    (re.compile(r"\bSG\.[A-Za-z0-9_-]{16,}\.[A-Za-z0-9_-]{16,}"), "SendGrid key"),
+    (re.compile(r"\bAIza[0-9A-Za-z_-]{30,}"), "Google API key"),
+    (re.compile(r"\b(sk|pk)_(live|test)_[0-9A-Za-z]{20,}"), "Stripe key"),
+    (re.compile(r"\bsk-[A-Za-z0-9]{20,}"), "OpenAI key"),
+    (re.compile(r"\beyJ[A-Za-z0-9_-]{8,}\.[A-Za-z0-9_-]{8,}\.[A-Za-z0-9_-]{8,}"), "JWT"),
     (re.compile(r"-----BEGIN [A-Z ]*PRIVATE KEY-----"), "private key"),
 ]
 
