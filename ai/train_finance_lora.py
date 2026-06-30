@@ -135,7 +135,6 @@ def main():
             remove_unused_columns=False,
             dataloader_drop_last=True,
             fp16=use_gpu,
-            no_cuda=not use_gpu,
         ),
         train_dataset=ds,
         data_collator=DataCollatorForLanguageModeling(tokenizer=tok, mlm=False),
