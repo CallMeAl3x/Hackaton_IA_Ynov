@@ -1,0 +1,39 @@
+# --- Node / TanStack (techcorp-ai-chat) ---
+node_modules/
+dist/
+.output/
+.vite/
+.nitro/
+.tanstack/
+*.local
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# --- Secrets / env ---
+.env
+.env.*
+*.pem
+*.key
+
+# --- Poids & artefacts de modèle (lourds / binaires) ---
+*.safetensors
+*.bin
+*.gguf
+*.onnx
+*.pt
+*.pth
+techCorp_old/model_repository/**/__pycache__/
+
+# --- Datasets volumineux (gérés via Git LFS à l'origine) ---
+techCorp_old/datasets/*.json
+
+# --- Rapports générés par le scanner ---
+security/*.csv
+scan_report.csv
+
+# --- OS ---
+.DS_Store
