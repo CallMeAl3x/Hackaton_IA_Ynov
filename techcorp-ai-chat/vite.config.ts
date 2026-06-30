@@ -1,9 +1,9 @@
 import { defineConfig } from "vite";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
+import viteReact from "@vitejs/plugin-react";
 
-// Si `npx create-start-app` génère un vite.config différent (nouvelles versions),
-// garde le sien et ne reprends d'ici que le plugin tanstackStart().
+// Ordre important : tanstackStart() avant viteReact().
 export default defineConfig({
   server: { port: 3000 },
-  plugins: [tanstackStart()],
+  plugins: [tanstackStart(), viteReact()],
 });

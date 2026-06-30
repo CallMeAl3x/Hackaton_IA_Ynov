@@ -67,14 +67,17 @@ def main():
     assert os.path.exists(args.data), f"dataset introuvable: {args.data}"
 
     # --- Tokenizer ---
-    tok = AutoTokenizer.from_pretrained(BASE_MODEL, trust_remote_code=True)
+    # Pas de trust_remote_code : transformers gère Phi-3 nativement.
+    # (le modeling_phi3.py distant est obsolète -> KeyError rope_scaling['type'])
+    tok = AutoTokenizer.from_pretrained(BASE_MODEL)
     if tok.pad_token is None:
         tok.pad_token = tok.eos_token
     tok.padding_side = "right"
 
     # --- Modèle (4-bit si GPU) ---
     use_gpu = torch.cuda.is_available()
-    kwargs = {"trust_remote_code": True, "low_cpu_mem_usage": True}
+    # attn_implementation="eager" : flash-attn absent sur T4.
+    kwargs = {"low_cpu_mem_usage": True, "attn_implementation": "eager"}
     if use_gpu:
         kwargs["quantization_config"] = BitsAndBytesConfig(
             load_in_4bit=True,
@@ -83,10 +86,10 @@ def main():
             bnb_4bit_quant_type="nf4",
         )
         kwargs["device_map"] = "auto"
-        kwargs["torch_dtype"] = torch.float16
+        kwargs["dtype"] = torch.float16
         print("🔧 4-bit quantization (GPU)")
     else:
-        kwargs["torch_dtype"] = torch.float32
+        kwargs["dtype"] = torch.float32
         print("💻 CPU (lent — privilégier Colab GPU)")
 
     model = AutoModelForCausalLM.from_pretrained(BASE_MODEL, **kwargs)
