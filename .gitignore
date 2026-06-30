@@ -6,6 +6,12 @@ dist/
 .nitro/
 .tanstack/
 *.local
+**/routeTree.gen.ts
+
+# --- Artefacts d'entraînement / merge (lourds) ---
+phi3_financial_clean/
+phi3_financial_merged/
+llama.cpp/
 
 # --- Python ---
 __pycache__/
@@ -28,8 +34,8 @@ venv/
 *.pth
 techCorp_old/model_repository/**/__pycache__/
 
-# --- Datasets volumineux (gérés via Git LFS à l'origine) ---
-techCorp_old/datasets/*.json
+# --- Ancien projet ---
+techCorp_old/*
 
 # --- Rapports générés par le scanner ---
 security/*.csv
